@@ -1,0 +1,988 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GROMP | The Confused Alien of Solana</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="GROMP ($GROMP) – a confused alien who just discovered Solana. A pure meme, fair launch, and community-driven chaos."
+  />
+  <style>
+    :root {
+      --bg: #05000a;
+      --bg-alt: #120020;
+      --accent: #b043ff;
+      --accent-soft: rgba(176, 67, 255, 0.15);
+      --accent-strong: #ffdd3b;
+      --text: #f5f5ff;
+      --muted: #b3a9d6;
+      --danger: #ff4d8c;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --card-radius: 20px;
+      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.55);
+      --shadow-glow: 0 0 30px rgba(176, 67, 255, 0.45);
+      --transition-fast: 0.18s ease-out;
+      --transition-med: 0.24s ease-out;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #26003f 0, #05000a 55%, #000 100%);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    main {
+      flex: 1;
+    }
+
+    .page-shell {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 18px 18px 60px;
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.05), rgba(9, 0, 25, 0.85));
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: linear-gradient(to bottom, rgba(5, 0, 10, 0.96), rgba(5, 0, 10, 0.92), transparent);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .nav {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 12px 18px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 15%, #eaff86, #67ffbf 40%, #15b4ff 70%, #120020 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-glow);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.2);
+      font-weight: 800;
+      font-size: 18px;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      font-size: 14px;
+    }
+
+    .brand-tag {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 13px;
+    }
+
+    .nav-links a {
+      padding: 5px 10px;
+      border-radius: 999px;
+      color: var(--muted);
+      border: 1px solid transparent;
+      transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), transform 0.12s ease-out;
+    }
+
+    .nav-links a:hover {
+      background: rgba(255, 255, 255, 0.03);
+      border-color: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      transform: translateY(-1px);
+    }
+
+    .nav-cta {
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: none;
+      background: radial-gradient(circle at 20% 0, #ffe979, #ff6f9b);
+      color: #120019;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 10px 26px rgba(255, 160, 200, 0.6);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
+    }
+
+    .nav-cta span {
+      font-size: 15px;
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-1px) scale(1.02);
+      box-shadow: 0 14px 32px rgba(255, 160, 200, 0.9);
+      filter: brightness(1.03);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 24px;
+      margin-top: 22px;
+      align-items: center;
+    }
+
+    .hero-left {
+      padding: 22px 22px 24px;
+    }
+
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      background: rgba(7, 0, 17, 0.88);
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      margin-bottom: 14px;
+    }
+
+    .hero-pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #74ff9b, #0dd66c);
+      box-shadow: 0 0 8px rgba(116, 255, 155, 0.9);
+    }
+
+    .hero-title {
+      font-size: clamp(2.2rem, 4vw, 2.8rem);
+      line-height: 1.05;
+      letter-spacing: 0.03em;
+      margin-bottom: 10px;
+    }
+
+    .hero-title span {
+      background: linear-gradient(110deg, #ffe979, #ff9df5, #7dfdff);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 34rem;
+      margin-bottom: 18px;
+    }
+
+    .hero-subtitle strong {
+      color: #fdf5ff;
+    }
+
+    .hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .btn-primary,
+    .btn-ghost {
+      padding: 9px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+      border: none;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+    }
+
+    .btn-primary {
+      background: radial-gradient(circle at 0 0, #ffe979, #ff6f9b);
+      color: #150010;
+      box-shadow: 0 12px 30px rgba(255, 160, 200, 0.8);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px) scale(1.02);
+      box-shadow: 0 16px 34px rgba(255, 160, 200, 1);
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      color: var(--muted);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      transform: translateY(-1px);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-icon {
+      font-size: 15px;
+      transform: translateY(0.5px);
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+    }
+
+    .chip {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(7, 0, 20, 0.9);
+    }
+
+    .chip span {
+      color: #fdf5ff;
+      font-weight: 600;
+    }
+
+    .hero-right {
+      padding: 18px 18px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-orbit {
+      position: absolute;
+      inset: -15%;
+      background:
+        radial-gradient(circle at 10% 0, rgba(178, 255, 169, 0.08), transparent 45%),
+        radial-gradient(circle at 90% 20%, rgba(255, 180, 246, 0.12), transparent 55%),
+        radial-gradient(circle at 50% 120%, rgba(91, 254, 255, 0.15), transparent 60%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .gromp-orb {
+      position: relative;
+      z-index: 2;
+      border-radius: 26px;
+      padding: 16px 16px 18px;
+      background: radial-gradient(circle at 20% 0, rgba(156, 255, 202, 0.12), rgba(7, 0, 18, 0.95));
+      border: 1px solid rgba(183, 255, 240, 0.4);
+      box-shadow: var(--shadow-glow);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .gromp-tagline {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: #e4fffb;
+      opacity: 0.9;
+    }
+
+    .gromp-image-shell {
+      margin-top: 8px;
+      width: 210px;
+      height: 210px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0, #eaff86, #67ffbf 45%, #15b4ff 80%, #120020);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 24px 70px rgba(22, 255, 196, 0.85);
+      overflow: hidden;
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      position: relative;
+    }
+
+    .gromp-image-shell::before {
+      content: "";
+      position: absolute;
+      inset: 12%;
+      border-radius: inherit;
+      border: 1px dashed rgba(255, 255, 255, 0.25);
+      mix-blend-mode: screen;
+    }
+
+    .gromp-image-shell-inner {
+      width: 78%;
+      height: 78%;
+      border-radius: 999px;
+      overflow: hidden;
+      background: #3b1b5f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gromp-image-shell-inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .gromp-caption {
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+      max-width: 14rem;
+    }
+
+    .gromp-caption span {
+      color: #e4fffb;
+      font-weight: 600;
+    }
+
+    section {
+      margin-top: 28px;
+    }
+
+    .section-header {
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .section-kicker {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+    }
+
+    .section-title {
+      font-size: 20px;
+      letter-spacing: 0.04em;
+    }
+
+    .section-title span {
+      color: var(--accent-strong);
+    }
+
+    .section-sub {
+      font-size: 13px;
+      color: var(--muted);
+      max-width: 32rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 18px;
+    }
+
+    .tokenomics-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+    }
+
+    .token-card {
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.04), rgba(9, 0, 24, 0.9));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 13px;
+    }
+
+    .token-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .token-value {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .token-note {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .how-steps {
+      list-style: none;
+      display: grid;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .how-steps li {
+      padding: 7px 10px;
+      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .how-steps strong {
+      color: var(--text);
+    }
+
+    .wallet-box {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px dashed rgba(255, 255, 255, 0.18);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      font-size: 12px;
+    }
+
+    .wallet-address {
+      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      color: #fdf5ff;
+      word-break: break-all;
+    }
+
+    .wallet-copy {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.04);
+      cursor: pointer;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .wallet-copy:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .wallet-copy span {
+      font-size: 13px;
+    }
+
+    .scanner-card {
+      padding: 14px 14px 16px;
+      border-radius: 18px;
+      background: radial-gradient(circle at top, rgba(0, 255, 170, 0.1), rgba(4, 0, 20, 0.96));
+      border: 1px solid rgba(175, 255, 229, 0.4);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 13px;
+    }
+
+    .scanner-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    input[type="range"] {
+      width: 100%;
+    }
+
+    .scanner-output {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .scanner-output span {
+      color: var(--accent-strong);
+    }
+
+    .scanner-sub {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 12px;
+      font-size: 13px;
+    }
+
+    .faq-item {
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: rgba(0, 0, 0, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .faq-q {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .faq-a {
+      color: var(--muted);
+    }
+
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 16px 18px 20px;
+      margin-top: 20px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .footer-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .footer-links a {
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+    }
+
+    .footer-links a:hover {
+      border-color: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    @media (max-width: 768px) {
+      .nav {
+        padding-inline: 14px;
+      }
+      .nav-links {
+        display: none;
+      }
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .hero-right {
+        order: -1;
+      }
+      .page-shell {
+        padding-inline: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="nav">
+      <div class="nav-left">
+        <div class="logo-circle">G</div>
+        <div class="brand">
+          <div class="brand-name">$GROMP</div>
+          <div class="brand-tag">confused alien on solana</div>
+        </div>
+      </div>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#tokenomics">Tokenomics</a>
+        <a href="#how">How to buy</a>
+        <a href="#scanner">GROMP scanner</a>
+        <button class="nav-cta" onclick="scrollToSection('how')">
+          Buy $GROMP <span>⚡</span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="page-shell">
+      <section class="hero card" id="top">
+        <div class="hero-left">
+          <div class="hero-pill">
+            <div class="hero-pill-dot"></div>
+            <div>Live on Solana &middot; Meme only</div>
+          </div>
+          <h1 class="hero-title">
+            GROMP <span>has discovered Solana.</span><br />He is deeply confused.
+          </h1>
+          <p class="hero-subtitle">
+            <strong>$GROMP</strong> is a confused alien who just landed on Solana and is trying to understand
+            your memes, markets and degen behaviour. No utility, no promises, just pure community-driven chaos.
+          </p>
+          <div class="hero-ctas">
+            <button class="btn-primary" onclick="scrollToSection('how')">
+              Buy on Solana <span class="btn-icon">🚀</span>
+            </button>
+            <button class="btn-ghost" onclick="scrollToSection('scanner')">
+              Launch GROMP scanner <span class="btn-icon">👽</span>
+            </button>
+          </div>
+          <div class="hero-meta">
+            <div class="chip">Ticker: <span>$GROMP</span></div>
+            <div class="chip">Chain: <span>Solana</span></div>
+            <div class="chip">Status: <span>Confused & Live</span></div>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="hero-orbit"></div>
+          <div class="gromp-orb">
+            <div class="gromp-tagline">subject: gromp-01 &middot; mood: ???</div>
+            <div class="gromp-image-shell">
+              <div class="gromp-image-shell-inner">
+                <!-- Put your GROMP image in the same folder as index.html and name it gromp.png -->
+                <img src="gromp.png" alt="GROMP the confused alien" />
+              </div>
+            </div>
+            <p class="gromp-caption">
+              “<span>GROMP</span> is still learning what ‘wen’ and ‘ser’ mean. He likes green candles though.”
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="about">
+        <div class="section-header">
+          <div class="section-kicker">what is gromp?</div>
+          <h2 class="section-title">An alien who took one look at Solana and stayed anyway.</h2>
+          <p class="section-sub">
+            GROMP doesn’t understand your charts, your leverage, or your obsession with dog coins.
+            He only knows one thing: <strong>number go up = good, number go down = very confusing.</strong>
+            $GROMP is a pure meme experiment on Solana with transparent tokenomics and heavy community vibes.
+          </p>
+        </div>
+      </section>
+
+      <section id="tokenomics" class="card" style="padding: 18px 18px 20px; margin-top: 24px;">
+        <div class="section-header">
+          <div class="section-kicker">tokenomics</div>
+          <h2 class="section-title"><span>Simple.</span> Like GROMP’s brain chemistry.</h2>
+          <p class="section-sub">
+            No VCs, no presale, no unlock schedule that needs a PhD to read. Just a clean meme launch.
+          </p>
+        </div>
+        <div class="grid-2">
+          <ul class="tokenomics-list">
+            <li class="token-card">
+              <div class="token-label">Total Supply</div>
+              <div class="token-value">999,000,000 $GROMP</div>
+              <div class="token-note">Because 1 billion felt too serious.</div>
+            </li>
+            <li class="token-card">
+              <div class="token-label">Mint Authority</div>
+              <div class="token-value">Revoked</div>
+              <div class="token-note">No extra GROMPs can be spawned.</div>
+            </li>
+            <li class="token-card">
+              <div class="token-label">Freeze Authority</div>
+              <div class="token-value">Revoked</div>
+              <div class="token-note">GROMP hates being frozen.</div>
+            </li>
+            <li class="token-card">
+              <div class="token-label">Liquidity</div>
+              <div class="token-value">Burned</div>
+              <div class="token-note">GROMP yeeted the keys into space.</div>
+            </li>
+            <li class="token-card">
+              <div class="token-label">Team Allocation</div>
+              <div class="token-value">0% / Meme Only</div>
+              <div class="token-note">Community owns the confusion.</div>
+            </li>
+            <li class="token-card">
+              <div class="token-label">Tax</div>
+              <div class="token-value">0%</div>
+              <div class="token-note">GROMP doesn’t believe in taxes.</div>
+            </li>
+          </ul>
+          <div>
+            <div class="section-header" style="margin-bottom: 10px;">
+              <div class="section-kicker">disclaimer</div>
+              <h3 class="section-title" style="font-size: 16px;">This is a meme. Treat it like one.</h3>
+            </div>
+            <p class="section-sub" style="margin-bottom: 8px;">
+              $GROMP is a community-driven meme coin with no intrinsic value, no expectation of profit, and
+              absolutely no roadmap guaranteed. Everything built around GROMP is for fun, vibes and culture only.
+            </p>
+            <p class="section-sub">
+              Do not spend money you can’t afford to lose. GROMP would be sad.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="how" class="card" style="padding: 18px 18px 20px; margin-top: 24px;">
+        <div class="section-header">
+          <div class="section-kicker">how to buy</div>
+          <h2 class="section-title">Help GROMP understand DeFi in 4 steps.</h2>
+          <p class="section-sub">
+            Here’s how to snag some $GROMP on Solana like a professional degen (or at least pretend to be one).
+          </p>
+        </div>
+        <div class="grid-2">
+          <ul class="how-steps">
+            <li>
+              <strong>1. Get a Solana wallet.</strong><br />
+              Use Phantom, Solflare, Backpack, or your favourite Solana wallet. Make sure you write down your seed phrase
+              somewhere safe (not in GROMP’s DMs).
+            </li>
+            <li>
+              <strong>2. Load up on SOL.</strong><br />
+              Buy SOL on a centralized exchange and withdraw it to your wallet. This will pay for $GROMP and gas.
+            </li>
+            <li>
+              <strong>3. Visit your DEX of choice.</strong><br />
+              Open Jupiter, Raydium, or your favourite Solana DEX. Paste the $GROMP contract address once it’s live.
+            </li>
+            <li>
+              <strong>4. Swap, confirm, and vibe.</strong><br />
+              Approve the swap, wait a few seconds, and boom – you are now as confused as GROMP, but with more coins.
+            </li>
+          </ul>
+
+          <div>
+            <div class="section-header" style="margin-bottom: 10px;">
+              <div class="section-kicker">contract</div>
+              <h3 class="section-title" style="font-size: 16px;">$GROMP contract address</h3>
+            </div>
+            <div class="wallet-box">
+              <div class="wallet-address" id="grompAddress">
+                COMING_SOON_PUT_YOUR_SOL_CONTRACT_HERE
+              </div>
+              <button class="wallet-copy" onclick="copyAddress()">
+                <span>📋</span> Copy
+              </button>
+            </div>
+            <p class="section-sub" style="margin-top: 8px;">
+              Always double-check the contract address from official social links before aping. GROMP hates fake clones.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="scanner" style="margin-top: 26px;">
+        <div class="section-header">
+          <div class="section-kicker">interactive</div>
+          <h2 class="section-title"><span>GROMP Mood Scanner</span> for your degen energy.</h2>
+          <p class="section-sub">
+            Drag the slider to tell GROMP how degen you feel today. He will rate your current brain state in real-time.
+          </p>
+        </div>
+        <div class="scanner-card">
+          <div class="scanner-label">
+            <span>GROMP degen level</span>
+            <span id="scannerValue">42%</span>
+          </div>
+          <input
+            type="range"
+            id="scannerRange"
+            min="0"
+            max="100"
+            value="42"
+            oninput="updateScanner()"
+          />
+          <div class="scanner-output" id="scannerOutput">
+            GROMP verdict: <span>Medium confused, medium cooked.</span>
+          </div>
+          <p class="scanner-sub" id="scannerSub">
+            This reading is not financial advice. It’s barely even emotional advice.
+          </p>
+        </div>
+      </section>
+
+      <section id="faq" style="margin-top: 26px;">
+        <div class="section-header">
+          <div class="section-kicker">faq</div>
+          <h2 class="section-title">Frequently Asked Confusions.</h2>
+        </div>
+        <div class="faq-grid">
+          <div class="faq-item">
+            <div class="faq-q">Is there a roadmap?</div>
+            <div class="faq-a">
+              GROMP is still figuring out how to read roadmaps. Expect community-driven fun, memes, and maybe some tools.
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Is this financial advice?</div>
+            <div class="faq-a">
+              No. This is an alien on the internet. Do your own research and only risk what you can afford to lose.
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Will there be utilities?</div>
+            <div class="faq-a">
+              Primary utility is <strong>vibes</strong>. Anything else the community builds is a bonus.
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Where can I follow GROMP?</div>
+            <div class="faq-a">
+              Add your official links (Twitter, Telegram, Pump.fun, etc.) here once you’re live so humans know where to go.
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div>Made by degens for degens. GROMP salutes you. 👽</div>
+      <div class="footer-links">
+        <a href="#top">Back to top</a>
+        <a href="#">Twitter</a>
+        <a href="#">Telegram</a>
+        <a href="#">Pump.fun</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function copyAddress() {
+      const addrEl = document.getElementById("grompAddress");
+      const text = addrEl.textContent.trim();
+      if (!navigator.clipboard) {
+        alert("Copied: " + text);
+        return;
+      }
+      navigator.clipboard.writeText(text).then(
+        () => {
+          const original = addrEl.textContent;
+          addrEl.textContent = "Address copied to clipboard ✅";
+          setTimeout(() => {
+            addrEl.textContent = original;
+          }, 1200);
+        },
+        () => {
+          alert("Could not copy. Please copy manually: " + text);
+        }
+      );
+    }
+
+    function updateScanner() {
+      const range = document.getElementById("scannerRange");
+      const value = parseInt(range.value, 10);
+      const label = document.getElementById("scannerValue");
+      const output = document.getElementById("scannerOutput");
+      const sub = document.getElementById("scannerSub");
+
+      label.textContent = value + "%";
+
+      let verdict = "";
+      let detail = "";
+
+      if (value <= 15) {
+        verdict = "Ultra safe mode.";
+        detail = "GROMP respects your discipline, but wonders if you’re even degen.";
+      } else if (value <= 35) {
+        verdict = "Mildly curious.";
+        detail = "You watch charts more than you trade. GROMP understands this coping mechanism.";
+      } else if (value <= 65) {
+        verdict = "Medium confused, medium cooked.";
+        detail = "You probably said ‘just one more’ already today.";
+      } else if (value <= 85) {
+        verdict = "Peak degen energy.";
+        detail = "You buy first, read later. GROMP is proud and also concerned.";
+      } else {
+        verdict = "MAX GROMP OVERRIDE.";
+        detail = "If this were advice, it would say: touch grass. But it’s not.";
+      }
+
+      output.innerHTML = 'GROMP verdict: <span>' + verdict + "</span>";
+      sub.textContent = detail;
+    }
+
+    updateScanner();
+  </script>
+</body>
+</html>
