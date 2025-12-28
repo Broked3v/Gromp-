@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GROMP — Confused Alien on Solana</title>
+  <meta name="description" content="GROMP is the confused alien on Solana. No roadmap. No promises. Just GROMP." />
+  <style>
+    :root{
+      --bg: #050607;
+      --panel: rgba(255,255,255,.04);
+      --panel2: rgba(255,255,255,.06);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.62);
+      --line: rgba(255,255,255,.10);
+      --glow: rgba(126,231,135,.65);
+      --accent: #7ee787;
+      --accent2: #9b7ee7;
+      --danger: #ff5a76;
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --radius: 18px;
+    }
+    *{ box-sizing:border-box; }
+    html, body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--text);
+      background:
+        radial-gradient(1200px 600px at 18% 10%, rgba(126,231,135,.13), transparent 60%),
+        radial-gradient(900px 500px at 86% 20%, rgba(155,126,231,.12), transparent 55%),
+        radial-gradient(1000px 700px at 50% 90%, rgba(255,90,118,.07), transparent 60%),
+        var(--bg);
+      overflow-x:hidden;
+    }
+    a{ color: inherit; text-decoration: none; }
+    .wrap{ max-width: 1080px; margin: 0 auto; padding: 26px 18px 60px; }
+
+    /* Top bar */
+    .top{
+      display:flex; justify-content:space-between; align-items:center;
+      gap:12px; margin-bottom: 18px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      border-radius: 999px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      backdrop-filter: blur(8px);
+    }
+    .dot{
+      width: 10px; height: 10px; border-radius:999px;
+      background: var(--accent);
+      box-shadow: 0 0 22px var(--glow);
+    }
+    .brand strong{ letter-spacing:.3px; }
+    .nav{
+      display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;
+    }
+    .chip{
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+      backdrop-filter: blur(8px);
+    }
+    .chip:hover{ transform: translateY(-1px); border-color: rgba(126,231,135,.45); background: rgba(126,231,135,.06); color: var(--text); }
+
+    /* Hero */
+    .hero{
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      position: relative;
+      overflow:hidden;
+    }
+    .hero:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(600px 240px at 18% 10%, rgba(126,231,135,.18), transparent 60%),
+                  radial-gradient(560px 240px at 82% 10%, rgba(155,126,231,.16), transparent 60%);
+      opacity: .9;
+      pointer-events:none;
+    }
+    .heroInner{
+      position:relative;
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+    @media (max-width: 900px){
+      .heroInner{ grid-template-columns: 1fr; }
+    }
+    .title{
+      padding: 6px 6px 6px 2px;
+    }
+    h1{
+      font-size: clamp(42px, 6vw, 72px);
+      line-height: 1.02;
+      margin: 0 0 10px;
+      letter-spacing: -1px;
+    }
+    .kicker{
+      display:inline-flex; gap:10px; align-items:center;
+      color: var(--muted);
+      font-weight: 600;
+      letter-spacing: .2px;
+      margin-bottom: 14px;
+    }
+    .kicker .pill{
+      border: 1px solid var(--line);
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.03);
+    }
+    .sub{
+      font-size: 1.08rem;
+      line-height: 1.55;
+      color: var(--muted);
+      margin: 0 0 18px;
+      max-width: 58ch;
+    }
+    .ctaRow{
+      display:flex; flex-wrap:wrap; gap:10px;
+      align-items:center;
+    }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      font-weight: 700;
+      cursor:pointer;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+      user-select:none;
+    }
+    .btn:hover{ transform: translateY(-1px); border-color: rgba(126,231,135,.5); background: rgba(126,231,135,.07); }
+    .btn.primary{
+      background: linear-gradient(180deg, rgba(126,231,135,.22), rgba(126,231,135,.10));
+      border-color: rgba(126,231,135,.48);
+      box-shadow: 0 0 0 1px rgba(126,231,135,.15), 0 18px 40px rgba(0,0,0,.35);
+    }
+    .btn.primary:hover{ background: linear-gradient(180deg, rgba(126,231,135,.28), rgba(126,231,135,.12)); }
+    .btn.ghost{ color: var(--muted); }
+    .btn.ghost:hover{ color: var(--text); border-color: rgba(155,126,231,.45); background: rgba(155,126,231,.06); }
+
+    /* Right hero card */
+    .side{
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(0,0,0,.18);
+      backdrop-filter: blur(10px);
+      padding: 16px;
+      display:flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .alien{
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: radial-gradient(420px 240px at 30% 20%, rgba(126,231,135,.14), transparent 60%),
+                  radial-gradient(420px 240px at 70% 20%, rgba(155,126,231,.12), transparent 60%),
+                  rgba(255,255,255,.03);
+      padding: 14px;
+      position: relative;
+      overflow:hidden;
+      min-height: 170px;
+    }
+    .alien .face{
+      width: 96px; height: 96px;
+      border-radius: 26px;
+      background: rgba(126,231,135,.12);
+      border: 1px solid rgba(126,231,135,.22);
+      box-shadow: 0 0 40px rgba(126,231,135,.12);
+      display:flex; align-items:center; justify-content:center;
+      font-size: 44px;
+      margin-bottom: 10px;
+    }
+    .alien .txt{
+      color: var(--muted);
+      line-height: 1.45;
+      margin:0;
+    }
+    .statGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .stat{
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255,255,255,.03);
+      padding: 12px;
+    }
+    .stat .k{ color: var(--muted); font-size: .85rem; }
+    .stat .v{ font-weight: 800; margin-top: 3px; letter-spacing:.2px; }
+
+    .mintBox{
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255,255,255,.03);
+      padding: 12px;
+    }
+    .mintBox label{ display:block; font-size: .85rem; color: var(--muted); margin-bottom: 8px; }
+    .mintRow{ display:flex; gap:10px; flex-wrap:wrap; }
+    input{
+      flex: 1 1 240px;
+      padding: 11px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.22);
+      color: var(--text);
+      outline: none;
+    }
+    input::placeholder{ color: rgba(255,255,255,.35); }
+    .mini{
+      padding: 11px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      cursor:pointer;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .mini:hover{ border-color: rgba(126,231,135,.45); background: rgba(126,231,135,.06); }
+
+    /* Sections */
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+    @media (max-width: 900px){ .grid2{ grid-template-columns: 1fr; } }
+    .card{
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.03);
+      box-shadow: 0 12px 40px rgba(0,0,0,.25);
+      padding: 18px;
+      text-align:left;
+    }
+    .card h2{
+      margin:0 0 10px;
+      font-size: 1.1rem;
+      letter-spacing: .2px;
+    }
+    .list{
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+    .fine{ color: rgba(255,255,255,.52); font-size: .92rem; line-height: 1.55; }
+    .road{
+      display:grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .step{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      border-radius: 14px;
+      padding: 12px;
+    }
+    .step b{ display:inline-flex; align-items:center; gap:8px; }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      color: rgba(255,255,255,.70);
+      font-size: .85rem;
+      margin-right: 8px;
+      background: rgba(255,255,255,.03);
+    }
+
+    /* Footer */
+    .footer{
+      margin-top: 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.02);
+      padding: 14px 16px;
+      color: rgba(255,255,255,.52);
+      text-align:left;
+      display:flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .toast{
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 18px;
+      width: min(560px, calc(100vw - 36px));
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.72);
+      backdrop-filter: blur(10px);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      padding: 12px 12px;
+      color: rgba(255,255,255,.78);
+      display:none;
+      z-index: 30;
+      text-align:left;
+    }
+    .toast strong{ color: var(--text); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <span class="dot"></span>
+        <strong>GROMP</strong>
+        <span style="color: rgba(255,255,255,.55); font-weight:600;">• confused alien</span>
+      </div>
+      <div class="nav">
+        <a class="chip" href="#about">About</a>
+        <a class="chip" href="#token">Token</a>
+        <a class="chip" href="#links">Links</a>
+      </div>
+    </div>
+
+    <section class="hero" id="top">
+      <div class="heroInner">
+        <div class="title">
+          <div class="kicker">
+            <span class="pill">Solana meme</span>
+            <span class="pill" id="signalPill">signal: ???</span>
+          </div>
+          <h1>GROMP.<br/>Very confused.</h1>
+          <p class="sub">
+            An alien landed on Solana and immediately tried to understand charts.
+            It failed. Now it just vibes.
+          </p>
+          <div class="ctaRow">
+            <button class="btn primary" onclick="openSwap()">Buy GROMP</button>
+            <button class="btn" id="connectBtn" onclick="connectWallet()">Connect Wallet</button>
+            <a class="btn ghost" href="#about">Why?</a>
+          </div>
+          <p class="fine" style="margin-top:12px;">
+            Wallet connect is read-only (address access). This page never requests transaction signatures.
+          </p>
+        </div>
+
+        <aside class="side">
+          <div class="alien">
+            <div class="face">👽</div>
+            <p class="txt"><strong>GROMP status:</strong> confused, but bullish.</p>
+            <p class="txt" style="margin-top:6px;">
+              If you’re looking for utility… GROMP is also looking.
+            </p>
+          </div>
+
+          <div class="statGrid" id="token">
+            <div class="stat">
+              <div class="k">Chain</div>
+              <div class="v">Solana</div>
+            </div>
+            <div class="stat">
+              <div class="k">Tax</div>
+              <div class="v">0%</div>
+            </div>
+            <div class="stat">
+              <div class="k">Supply</div>
+              <div class="v">1,000,000,000</div>
+            </div>
+            <div class="stat">
+              <div class="k">Roadmap</div>
+              <div class="v">confusion</div>
+            </div>
+          </div>
+
+          <div class="mintBox">
+            <label>Token mint (paste when live)</label>
+            <div class="mintRow">
+              <input id="mintInput" placeholder="TOKEN_MINT_ADDRESS_HERE" autocomplete="off"/>
+              <button class="mini" onclick="copyMint()">Copy</button>
+              <button class="mini" onclick="openSwap()">Swap</button>
+            </div>
+            <p class="fine" style="margin:10px 0 0;">
+              Swap opens Jupiter (DEX aggregator) on Solana — not a “Jupiter token” thing.
+            </p>
+          </div>
+
+          <div class="pill" style="justify-content:space-between;">
+            <span>Wallet</span>
+            <span class="mono" id="walletLabel">not connected</span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <div class="grid2">
+      <section class="card" id="about">
+        <h2>What is GROMP?</h2>
+        <p class="fine">
+          GROMP is the confused alien of Solana. No promises. No grand “utility.”
+          Just a clean meme, a simple page, and a vibe that’s easy to share.
+        </p>
+        <ul class="list">
+          <li>Minimal, high-conversion landing page</li>
+          <li>Clear “Buy” + links</li>
+          <li>Deadpan humor (2025 meta)</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>Fake Roadmap (real vibes)</h2>
+        <div class="road">
+          <div class="step"><b><span class="badge">Phase 1</span> Arrive on Solana. Panic quietly.</b><div class="fine">GROMP reads charts upside down.</div></div>
+          <div class="step"><b><span class="badge">Phase 2</span> Community forms. Confusion spreads.</b><div class="fine">People start saying “gromp-coded”.</div></div>
+          <div class="step"><b><span class="badge">Phase 3</span> “Utility” discovered (it’s just memes).</b><div class="fine">GROMP still doesn’t understand liquidity.</div></div>
+          <div class="step"><b><span class="badge">Phase 4</span> Moon or rug. Either way: lore.</b><div class="fine">This is financial comedy.</div></div>
+        </div>
+      </section>
+    </div>
+
+    <section class="card" id="links" style="margin-top:16px;">
+      <h2>Links</h2>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px;">
+        <a class="btn" href="#" title="Add your X link">X (Twitter)</a>
+        <a class="btn" href="#" title="Add your Telegram link">Telegram</a>
+        <a class="btn" href="#" title="Add your Dexscreener link">Dexscreener</a>
+        <button class="btn primary" onclick="openSwap()">Buy GROMP</button>
+      </div>
+      <p class="fine" style="margin-top:12px;">
+        Tip: when you have your mint, paste it above and the Buy button will open a SOL → GROMP swap.
+      </p>
+    </section>
+
+    <div class="footer">
+      <div>© <span id="year"></span> GROMP • Solana meme • financial comedy</div>
+      <div class="fine">No roadmap. No guarantees. Don’t spend rent money.</div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+  // =========================
+  // CONFIG (edit these)
+  // =========================
+  const DEFAULT_TOKEN_MINT = ""; // put your mint here when live
+  const X_URL = "#";
+  const TG_URL = "#";
+  const DEX_URL = "#";
+
+  // =========================
+  // Helpers
+  // =========================
+  const $ = (id) => document.getElementById(id);
+  function toast(msg){
+    const t = $("toast");
+    t.innerHTML = msg;
+    t.style.display = "block";
+    clearTimeout(window.__toastTimer);
+    window.__toastTimer = setTimeout(() => t.style.display = "none", 3200);
+  }
+  function shortKey(pk){
+    const s = String(pk);
+    return (s.length <= 10) ? s : (s.slice(0,4) + "…" + s.slice(-4));
+  }
+
+  // =========================
+  // Links binding
+  // =========================
+  (function bindLinks(){
+    const links = document.querySelectorAll('a[title="Add your X link"]');
+    links.forEach(a => a.href = X_URL);
+    const tgs = document.querySelectorAll('a[title="Add your Telegram link"]');
+    tgs.forEach(a => a.href = TG_URL);
+    const dx = document.querySelectorAll('a[title="Add your Dexscreener link"]');
+    dx.forEach(a => a.href = DEX_URL);
+  })();
+
+  // =========================
+  // Swap (Jupiter) - Solana
+  // =========================
+  function currentMint(){
+    const v = ($("mintInput").value || "").trim();
+    return v || DEFAULT_TOKEN_MINT;
+  }
+  function openSwap(){
+    const mint = currentMint();
+    if(!mint){
+      toast("<strong>GROMP:</strong> paste the token mint first (not live yet).");
+      return;
+    }
+    window.open("https://jup.ag/swap/SOL-" + encodeURIComponent(mint), "_blank", "noopener,noreferrer");
+  }
+  async function copyMint(){
+    const mint = currentMint();
+    if(!mint){
+      toast("<strong>GROMP:</strong> no mint set yet.");
+      return;
+    }
+    try{
+      await navigator.clipboard.writeText(mint);
+      toast("<strong>Copied:</strong> mint address");
+    }catch{
+      toast("<strong>GROMP:</strong> could not copy — select and copy manually.");
+    }
+  }
+
+  // =========================
+  // Wallet connect (read-only)
+  // =========================
+  let connectedPublicKey = null;
+
+  function getProvider(){
+    if("solana" in window) return window.solana; // Phantom/Solflare injected
+    return null;
+  }
+  async function connectWallet(){
+    const provider = getProvider();
+    if(!provider){
+      toast("<strong>No wallet:</strong> install Phantom/Solflare then refresh.");
+      return;
+    }
+    try{
+      const resp = await provider.connect();
+      connectedPublicKey = resp.publicKey?.toString ? resp.publicKey.toString() : (resp.publicKey || provider.publicKey?.toString());
+      if(!connectedPublicKey) connectedPublicKey = provider.publicKey?.toString?.() || null;
+      $("walletLabel").textContent = connectedPublicKey ? shortKey(connectedPublicKey) : "connected";
+      $("connectBtn").textContent = "Wallet Connected";
+      $("connectBtn").disabled = true;
+      toast("<strong>Connected:</strong> " + shortKey(connectedPublicKey));
+    }catch(e){
+      console.log(e);
+      toast("<strong>Cancelled:</strong> wallet connect");
+    }
+  }
+
+  // =========================
+  // Tiny “signal” flavor
+  // =========================
+  const signals = ["???", "confused bullish", "sus but vibing", "ngmi? maybe", "probably fine", "alien-approved"];
+  function setSignal(){
+    $("signalPill").textContent = "signal: " + signals[Math.floor(Math.random()*signals.length)];
+  }
+  setSignal();
+  setInterval(setSignal, 9000);
+
+  // year
+  $("year").textContent = String(new Date().getFullYear());
+</script>
+</body>
+</html>
